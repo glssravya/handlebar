@@ -1,0 +1,116 @@
+<html>
+   <head>
+      <title>Game of Thrones</title>
+      <link href="css/bootstrap.min.css" rel="stylesheet" />
+      <link href="css/style.css" rel="stylesheet" />
+      <script type="text/javascript" src="js/handlebars-latest.js"></script>
+      <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+   </head>
+   <body>
+      <link href="css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+      <div class="container">
+         <div class="row">
+            <div class="col-12">
+               <div class="card">
+                  <div class="card-body p-0">
+                     <div class="p-5">
+                        <div class="col-md-12 text-center">
+                           <img src="images/logo.png" width="800" height="200">
+                        </div>
+                     </div>
+                     
+                     <section id="team" class="pb-5">
+                        <div class="container">
+                           <h3 class="section-title h3">Characters</h3>
+                           <div class="row" id="characters">
+                           </div>
+                        </div>
+                  </div>
+                  </section>
+                  <div class="row p-5">
+                     <div class="col-md-12">
+                        <table class="table">
+                           <thead>
+                              <tr>
+                                 <th class="border-0 text-uppercase small font-weight-bold">ID</th>
+                                 <th class="border-0 text-uppercase small font-weight-bold">Name</th>
+                                 <th class="border-0 text-uppercase small font-weight-bold">Family</th>
+                                 <th class="border-0 text-uppercase small font-weight-bold">Title</th>
+                                 <th class="border-0 text-uppercase small font-weight-bold">Kingdom</th>
+                              </tr>
+                           </thead>
+                           <tbody id="charData">
+                           </tbody>
+                        </table>
+                     </div>
+                  </div>
+                  <div class="d-flex flex-row-reverse bg-dark text-white p-4">
+                  </div>
+               </div>
+            </div>
+         </div>
+      </div>
+      <div class="text-light mt-5 mb-5 text-center small">by : <a class="text-light" target="_blank" href="http://totoprayogo.com">totoprayogo.com</a></div>
+      </div>
+
+    <!-- Character card template -->   
+    <script id="char-template" type="text/x-handlebars-template">
+      {{#characters}}
+        <div class="col-xs-12 col-sm-6 col-md-4">
+              <div class="frontside">
+                 <div class="card">
+                    <div class="card-body text-center">
+                       <p><img class="img-fluid" src="images/{{imagePath}}" alt="card image"></p>
+                       <h4 class="card-title">{{name}}</h4>
+                       <p class="card-text">{{description}}</p>
+                    </div>
+                 </div>
+           </div>
+        </div>
+    {{/characters}}
+    </script>
+    <!-- Character card template End-->  
+    <!-- Character Desc Table -->
+    <script id="desc-template" type="text/x-handlebars-template">
+      {{#charDesc}}
+        <tr>
+           <td>{{id}}</td>
+           <td>{{name}}</td>
+           <td>{{family}}</td>
+           <td>{{title}}</td>
+           <td>{{kingdom}}</td>
+        </tr>
+    {{/charDesc}}
+    </script>
+    <!-- Character Desc Table End-->      
+      
+    <script>
+      var characters = [];
+      var source = $("#char-template").html();
+      var template = Handlebars.compile(source);
+
+      $.ajax({
+          type: 'GET',
+          url: "https://jsonblob.com/api/aeb506f5-9c86-11e8-b69d-9f27bc5be14d",
+          success: function(data) {
+              characters = data;
+              $("#characters").append(template(characters));
+          },
+          error: function(data) {}
+      });
+
+      var charDesc = [];
+      var charDescTable = $('#desc-template').html();
+      var descTemplate = Handlebars.compile(charDescTable);
+      $.ajax({
+          type: 'GET',
+          url: "https://jsonblob.com/api/4e0b869c-9c8d-11e8-b69d-597e69f27965",
+          success: function(data) {
+              characteraData = data;
+              $("#charData").append(descTemplate(characteraData));
+          },
+          error: function(data) {}
+      });
+    </script>    
+   </body>
+</html>
